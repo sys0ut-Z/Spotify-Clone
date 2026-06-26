@@ -14,6 +14,7 @@ const SigninOAuthButtons = () => {
   }
 
   // TODO : fix here
+  // TODO-DONE : No, remove this code. The disabled prop already handles it — button is unclickable during "fetching" and shows "Redirecting...". Returning null would just make the button disappear mid-click which is worse UX. The TODO is solved.
   // if(fetchStatus === "fetching"){
   //   return null;
   // }

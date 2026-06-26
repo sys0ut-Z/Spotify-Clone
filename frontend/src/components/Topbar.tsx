@@ -29,9 +29,7 @@ const Topbar = () => {
 
         {/* when signed out */}
         <Show when="signed-out">
-          <SignInButton>
             <SigninOAuthButtons />
-          </SignInButton>
         </Show>
       </div>
     </div>

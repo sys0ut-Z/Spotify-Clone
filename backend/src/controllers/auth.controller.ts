@@ -9,6 +9,8 @@ const authCallback = async (
   try {
     const { id, firstName, lastName, imageUrl } = req.body;
 
+    // console.log({id, firstName, lastName, imageUrl});
+    
     // check if user is already logged in
     const user = await UserModel.findOne({ clerkId: id });
 
