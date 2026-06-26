@@ -7,21 +7,35 @@ import authRouter from "./routes/auth.routes.js";
 import albumRouter from "./routes/albums.routes.js";
 import songRouter from "./routes/songs.routes.js";
 import statsRouter from "./routes/stats.routes.js";
-import { connectDB } from "./config/db.config.js";
+import { connectDB } from "./lib/db.config.js";
 import { AppError } from "./utils/GlobalErrorHandler.js";
 import { errorMiddleware } from "./middlewares/error.middleware.js";
+import { clerkMiddleware } from "@clerk/express";
+import fileUpload from 'express-fileupload';
+import path from 'path';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5006;
+const __dirname = path.resolve();
 
 app.use(express.json()); // for parsing json
+app.use(clerkMiddleware()); // it will attach 'auth' object to request
 
 app.use(cors({
   origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
+}));
+
+app.use(fileUpload({
+  useTempFiles: true, // enable sotring temp files
+  tempFileDir: path.join(__dirname, 'tmp'), // store temp files here
+  createParentPath: true, // create folder if not exists
+  limits: {
+    fileSize: 5 * 1024 * 1024, //
+  }
 }));
 
 app.use("/api/user", userRouter);
@@ -50,4 +64,3 @@ app.use((req, res, next) => {
 app.use(errorMiddleware);
 
 startServer();
-
