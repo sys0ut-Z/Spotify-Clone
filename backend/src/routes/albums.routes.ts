@@ -6,4 +6,5 @@ const albumRouter = Router();
 
 albumRouter.get("/", albumController.getAllAlbums);
 albumRouter.get("/:albumId", albumController.getAlbumById);
+
 export default albumRouter;

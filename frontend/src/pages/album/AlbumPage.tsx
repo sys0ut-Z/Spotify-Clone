@@ -1,0 +1,54 @@
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useMusicStore } from '@/store/music.store';
+import React, { useEffect } from 'react'
+import { useParams } from 'react-router-dom';
+
+const AlbumPage = () => {
+  const {albumId} = useParams();
+  const {isLoading, fetchAlbumById, currentAlbum} = useMusicStore();
+
+  useEffect(() => {
+    if(albumId)
+      fetchAlbumById(albumId);
+  }, [albumId, fetchAlbumById]);
+
+  if(isLoading){
+    return (
+      <div>Loading...</div>
+    )
+  }
+
+  return (
+    <div className='h-full'>
+      <ScrollArea className='h-full'>
+        {/* Main Content */}
+        <div className='relative min-h-full'>
+
+          {/* Gradient background */}
+          <div className='absolute left-0 top-0 inset-0 bg-linear-to-b from-[#503a80]/80 via-zinc-900/80 to-zinc-900 pointer-events-none '>
+            Hello
+          </div>
+
+          {/* Content */}
+          <div className='relative z-10'>
+            <div className='flex p-6 gap-6 pb-8'>
+              <img 
+                src={currentAlbum?.imageUrl} 
+                alt="cover-image" 
+                className='w-60 h-60 shadow-xl rounded'
+              />
+              <div className='flex flex-col justify-end'>
+                <h3 className='text-sm font-medium'>Album </h3>
+                <h1 className='flex items-center gap-2 text-sm text-zinc-100'>
+                  {currentAlbum?.title}
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ScrollArea>
+    </div>
+  )
+}
+
+export default AlbumPage

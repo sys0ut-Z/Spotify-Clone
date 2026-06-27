@@ -4,7 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "server": "tsx watch src/server.ts"
+    "server": "tsx watch src/server.ts",
+    "seed:song" : "npx tsx src/seeds/songs.ts",
+    "seed:album" : "npx tsx src/seeds/albums.ts"
   },
   "keywords": [],
   "author": "",

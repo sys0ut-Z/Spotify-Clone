@@ -1,14 +1,21 @@
+import { useEffect } from 'react'
 import PlaylistSkeleton from '@/components/skeletons/PlaylistSkeleton'
 import { buttonVariants } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { Show } from '@clerk/react'
+import { useMusicStore } from '@/store/music.store'
 import { HomeIcon, Library, MessageCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const LeftSidebar = () => {
-  const isLoading = true;
+  const {isLoading, albums, fetchAlbums} = useMusicStore();
 
+  useEffect(() => {
+    fetchAlbums();
+  }, [fetchAlbums]);
+
+  // console.log({albums});
   return (
     <div className='h-full flex flex-col gap-2 mr-1.5'>
 
@@ -50,7 +57,21 @@ const LeftSidebar = () => {
                 <PlaylistSkeleton />
               ) : (
                 <div>
-                  
+                  {
+                    albums?.map((album) => (
+                      <Link to={`/albums/${album._id}`} key={album._id}
+                        className='group p-2 hover:bg-zinc-800 rounded-md flex items-center gap-3 cursor-pointer'
+                      >
+                        <img src={album.imageUrl} alt="cover-image" 
+                          className='size-12 rounded-md shrink-0 object-cover'
+                        />
+                        <div className='flex-1 min-w-0 hidden md:block'>
+                          <h3 className='font-md truncate'>{album.title}</h3>
+                          <p className='text-sm text-zinc-400 truncate'>Album •  {album.artist}</p>
+                        </div>
+                      </Link>
+                    ))
+                  }
                 </div>
               )
             }
