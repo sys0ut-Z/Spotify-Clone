@@ -9,10 +9,7 @@ const getAllAlbums = async (
   try {
     const albums = await AlbumModel.find({});
 
-    res.status(200).json({
-      success: true,
-      albums
-    });
+    res.status(200).json({albums});
   } catch (error) {
     next(error);
   }

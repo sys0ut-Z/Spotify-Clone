@@ -18,6 +18,6 @@ export default defineConfig([
     languageOptions: {
       globals: globals.browser,
     },
-    
+    "@typescript-eslint/no-explicit-any" : "off",
   },
 ])

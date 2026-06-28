@@ -1,3 +1,9 @@
+export interface User{
+  clerkId: string;
+  fullName: string;
+  imageUrl: string;
+};
+
 export interface Song{
   _id: string;
   title: string;
@@ -6,9 +12,9 @@ export interface Song{
   audioUrl: string;
   duration: number;
   albumId : string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
+  createdAt: string;
+  updatedAt: string;
+};
 
 export interface Album{
   _id: string;
@@ -16,7 +22,7 @@ export interface Album{
   artist: string;
   imageUrl: string;
   releaseYear: number;
-  songs : Song[] | string[]; // string for '_id' array
-  createdAt: Date;
-  updatedAt: Date;
-}
+  songs : Song[]
+  createdAt: string;
+  updatedAt: string;
+};

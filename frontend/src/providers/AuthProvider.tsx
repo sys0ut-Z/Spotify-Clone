@@ -2,6 +2,7 @@ import { axiosInstance } from '@/lib/axios';
 import { useAuth } from '@clerk/react';
 import React, { createContext, useEffect, useState } from 'react'
 import {Loader} from 'lucide-react';
+import { useAuthStore } from '@/store/auth.store';
 
 const AuthContext = createContext({});
 
@@ -19,6 +20,7 @@ const updateApiToken = (token: string | null) => {
 
 const AuthProvider = ({children}: {children: React.ReactNode}) => {
   const {getToken} = useAuth();
+  const {checkAdminStatus} = useAuthStore();
 
   const [loading, setLoading] = useState(false);
 
@@ -27,7 +29,12 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
       try {
         setLoading(true);
         const token = await getToken();
-        updateApiToken(token);
+        
+        // if token is present, user is authenticated, check for admin
+        if(token){
+          updateApiToken(token);
+          checkAdminStatus();
+        }
       } catch (error) {
         updateApiToken(null);
         // TODO : replace with toast later

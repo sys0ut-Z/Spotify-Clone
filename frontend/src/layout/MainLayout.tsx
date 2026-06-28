@@ -1,7 +1,7 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import { Outlet } from 'react-router-dom'
 import LeftSidebar from './components/LeftSidebar';
-import RightSidebar from './components/RightSidebar';
+import RightSidebar from './components/FriendsActivity';
 
 const MainLayout = () => {
   const isMobile = false;
@@ -13,7 +13,7 @@ const MainLayout = () => {
           <LeftSidebar />
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={isMobile ? 100 : 60} maxSize={80}>
+        <ResizablePanel defaultSize={isMobile ? 100 : 60} maxSize={80} className='rounded-md'>
           <Outlet />
         </ResizablePanel>
 

@@ -12,4 +12,6 @@ songRouter.get("/", authMiddleware, adminMiddleware, songController.getAllSongs)
 // six random featured songs for home page
 songRouter.get("/featured", songController.getFeaturedSongs);
 songRouter.get("/made-for-you", songController.getMadeForYou);
+songRouter.get("/trending", songController.getTrendingSongs);
+
 export default songRouter;

@@ -75,20 +75,38 @@ const getMadeForYou = async (
   }
 }
 
-// const getTrendingSongs = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-    
-//   } catch (error) {
-//     next(error);
-//   }
-// }
+const getTrendingSongs = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const songs = await SongModel.aggregate(
+      [
+        {
+          $sample: {size: 4}
+        },
+        {
+          $project: {
+            _id: 1,
+            title: 1,
+            artist: 1,
+            imageUrl: 1,
+            audioUrl: 1
+          }
+        }
+      ]
+    );
+
+    res.status(200).json({songs});
+  } catch (error) {
+    next(error);
+  }
+}
 
 export {
   getAllSongs,
   getFeaturedSongs,
-  getMadeForYou
+  getMadeForYou,
+  getTrendingSongs
 }

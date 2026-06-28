@@ -13,7 +13,10 @@ const getAllUsers = async (
     // all users except the authenticated user
     const users = await UserModel.find({clerkId: {$ne: userId}});
 
-    res.status(200).json({users});
+    res.status(200).json({
+      success: true,
+      users
+    });
   } catch (error) {
     next(error);
   }
