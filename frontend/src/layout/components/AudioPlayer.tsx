@@ -3,21 +3,19 @@ import React, { useEffect, useRef } from 'react'
 
 const AudioPlayer = () =>
 {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const prevSongRef = useRef<string | null>(null); // ^ this is just to verify for new song
 
   const { currentSong, isPlaying, playNext } = usePlayerStore();
 
-  // handle play/pause 
-  useEffect(() =>
-  {
+  // handle toggle play 
+  useEffect(() =>{
     if (isPlaying) audioRef.current?.play(); // play the media(audio, video etc)
     else audioRef.current?.pause(); // pause the media(audio, video etc)
   }, [isPlaying]);
 
   // handle song end
-  useEffect(() =>
-  {
+  useEffect(() => {
     const currentAudio = audioRef.current;
     const handleEnded = () => playNext();
 
@@ -28,8 +26,7 @@ const AudioPlayer = () =>
   }, []);
 
   // handle song change OR resume from where it left off
-  useEffect(() =>
-  {
+  useEffect(() => {
     if (!audioRef.current || !currentSong) return;
 
     const currentAudio = audioRef.current;
