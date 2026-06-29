@@ -8,9 +8,9 @@ const MainLayout = () => {
   const isMobile = false;
   return (
     <div className='h-screen bg-black text-white flex flex-col'>
+      {/* For Audio Controls */}
+      <AudioPlayer />
       <ResizablePanelGroup className='flex-1 flex h-full overflow-hidden p-2'>
-        {/* For Audio Controls */}
-        <AudioPlayer />
         
         {/* Left Sidebar : Playlist */}
         <ResizablePanel defaultSize={20} minSize={isMobile ? 0 : 10} maxSize={30}>

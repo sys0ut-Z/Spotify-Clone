@@ -1,6 +1,7 @@
 import SectionGridSkeleton from '@/pages/home/components/SectionGridSkeleton';
 import { Button } from '@/components/ui/button';
 import type { Song } from '@/types/index.types'
+import PlayButton from './PlayButton';
 
 type SectionGridProps = {
   title: string;
@@ -33,6 +34,7 @@ const SectionGrid = ({title, songs, isLoading}: SectionGridProps) => {
                   <img src={song.imageUrl} alt={song.title}
                     className='w-full h-full object-cover transition-transform group-hover:scale-105 duration-500'
                   />
+                  <PlayButton song={song}/>
                 </div>
 
               </div>              
