@@ -4,6 +4,7 @@ import { useMusicStore } from '@/store/music.store';
 import { Clock, Play } from 'lucide-react';
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
+import AlbumPageSkeleton from './components/AlbumPageSkeleton';
 
 const formatDuration = (duration: number) => {
   const minutes = Math.floor(duration / 60);
@@ -20,11 +21,7 @@ const AlbumPage = () => {
       fetchAlbumById(albumId);
   }, [albumId, fetchAlbumById]);
 
-  if(isLoading){
-    return (
-      <div>Loading...</div>
-    )
-  }
+  if(isLoading) return <AlbumPageSkeleton />
 
   return (
     <div className='h-full'>
@@ -62,9 +59,9 @@ const AlbumPage = () => {
             <div className='px-6 pb-4 flex items-center gap-6'>
               <Button
                 size='icon'
-                className='h-14 w-14 rounded-full bg-green-500 hover:bg-green-400 hover:scale-105 transition-all duration-300'
+                className='h-14 w-14 rounded-full bg-green-500 hover:bg-green-400 hover:scale-105 transition-all duration-300 cursor-pointer'
               >
-                <Play className='h-7 w-7 text-black'/>
+                <Play className='h-7 w-7 lg:w-8 lg:h-8 text-black'/>
               </Button>
             </div>
             <div className='bg-black/20 backdrop-blur-sm'>
