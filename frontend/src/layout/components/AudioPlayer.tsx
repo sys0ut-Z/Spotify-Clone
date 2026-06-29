@@ -1,15 +1,14 @@
 import { usePlayerStore } from '@/store/player.store';
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
-const AudioPlayer = () =>
-{
+const AudioPlayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const prevSongRef = useRef<string | null>(null); // ^ this is just to verify for new song
 
-  const { currentSong, isPlaying, playNext } = usePlayerStore();
+  const {currentSong, isPlaying, playNext} = usePlayerStore();
 
   // handle toggle play 
-  useEffect(() =>{
+  useEffect(() => {
     if (isPlaying) audioRef.current?.play(); // play the media(audio, video etc)
     else audioRef.current?.pause(); // pause the media(audio, video etc)
   }, [isPlaying]);

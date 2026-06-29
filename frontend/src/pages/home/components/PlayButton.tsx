@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { usePlayerStore } from '@/store/player.store'
 import type { Song } from '@/types/index.types'
 import { Pause, Play } from 'lucide-react';
-import { useEffect } from 'react';
 
 // ~ simple understanding : this is not queue, if the song ends then we stop, no moving to next song
 const PlayButton = ({song}: {song: Song}) => {

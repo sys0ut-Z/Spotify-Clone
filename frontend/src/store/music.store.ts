@@ -1,4 +1,3 @@
-import axios from "axios";
 import { axiosInstance } from "@/lib/axios";
 import {create} from "zustand";
 import type { Album, Song } from "@/types/index.types";

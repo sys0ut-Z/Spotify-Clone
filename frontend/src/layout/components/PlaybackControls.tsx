@@ -1,5 +1,5 @@
 import { usePlayerStore } from '@/store/player.store'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 const PlaybackControls = () => {
   const {currentSong} = usePlayerStore();
