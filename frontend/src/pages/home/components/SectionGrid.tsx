@@ -23,7 +23,7 @@ const SectionGrid = ({title, songs, isLoading}: SectionGridProps) => {
           View All
         </Button>
       </div>
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
         {
           songs?.map((song) => (
             <div key={song._id}
@@ -38,7 +38,7 @@ const SectionGrid = ({title, songs, isLoading}: SectionGridProps) => {
                 </div>
 
               </div>              
-              <h3 className='text-sm lg:text-md font-medium mb-2 truncate text-primary'>
+              <h3 className='text-sm lg:text-md font-medium mb-2 truncate text-white'>
                 {song.title}
               </h3>
               <h4 className='text-xs lg:text-sm text-zinc-400 truncate'>

@@ -10,7 +10,7 @@ const FeaturedSongs = () => {
   if(error) return <p className='text-red-500 text-xl p-2 mb-4'>{error}</p>
   
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-3 mb-6 lg:mb-8 mt-2 lg:mt-2.5'>
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-3 mb-6 lg:mb-8 mt-2 lg:mt-2.5'>
       {
         featuredSongs?.map((song) => (
           <div key={song._id}

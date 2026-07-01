@@ -65,14 +65,14 @@ const deleteSong = async (
     // add 'as' to satisfy Mongoose TS if you are using '{}' syntax
     const songId = req.params.songId;
 
-    if(!songId){
-      throw new AppError("Unable to delete song", 400);
-    }
-
     const song = await SongModel.findById(songId);
 
+    if(!song){
+      throw new AppError("Song not found, unable to delete", 404);
+    }
+
     // first remove that song from album if it belongs to any album
-    if(song?.albumId){
+    if(song.albumId){
       await AlbumModel.findByIdAndUpdate(song.albumId, {
         $pull: {songs: songId}
       });
@@ -133,10 +133,6 @@ const deleteAlbum = async (
 ) => {
   try {
     const {albumId} = req.params as {albumId: string};
-
-    if(!albumId){
-      throw new AppError("Unable to delete album", 400);
-    }
 
     // check whether album exists or not
     const album = await AlbumModel.findById(albumId);

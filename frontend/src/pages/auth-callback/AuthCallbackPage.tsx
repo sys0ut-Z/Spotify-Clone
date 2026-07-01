@@ -35,7 +35,6 @@ const AuthCallbackPage = () => {
         don't add navigate to finally block, it will redirectly early to home page before even making call to backend
       */
       navigate("/");
-      
     }
 
     syncUser();

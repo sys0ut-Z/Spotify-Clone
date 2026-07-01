@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import FeaturedSongs from './components/FeaturedSongs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import SectionGrid from './components/SectionGrid';
+import { usePlayerStore } from '@/store/player.store';
 
 const HomePage = () => {
   const {
@@ -16,12 +17,22 @@ const HomePage = () => {
     fetchTrendingSongs
   } = useMusicStore();
 
+  const {initializeQueue} = usePlayerStore();
+
   useEffect(() => {
     // & run all the fuction concurrently
     fetchMadeForYouSongs();
     fetchFeaturedSongs();
     fetchTrendingSongs();
   }, []);
+
+  // initialize queue for home page
+  useEffect(() => {
+    if(featuredSongs.length > 0 && madeForYouSongs.length > 0 && trendingSongs.length > 0) {
+      const allSongs = [...featuredSongs, ...madeForYouSongs, ...trendingSongs];
+      initializeQueue(allSongs);
+    }
+  }, [featuredSongs, madeForYouSongs, trendingSongs]);
 
   return (
     <main className='rounded-md overflow-hidden bg-linear-to-b from-zinc-800/55 via-zinc-800/30 to-zinc-900'>
