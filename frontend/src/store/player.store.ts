@@ -1,8 +1,7 @@
 import type { Song } from "@/types/index.types";
 import { create } from "zustand";
 
-interface MusicPlayerStore
-{
+interface MusicPlayerStore{
   currentSong: Song | null;
   currentIndex: number;
   isPlaying: boolean;
@@ -22,21 +21,18 @@ export const usePlayerStore = create<MusicPlayerStore>((set, get) => ({
   isPlaying: false,
   queue: [],
 
-  initializeQueue: (songs) =>
-  {
+  initializeQueue: (songs) =>{
     set({
       queue: songs,
       currentSong: get().currentSong || songs[0],
-      currentIndex: (() =>
-      {
+      currentIndex: (() => {
         return get().currentIndex === -1 ? 0 : get().currentIndex;
       })(), // use one line arrow function
     });
   },
 
   // here, we will receive album songs
-  playAlbum: (songs, startIndex = 0) =>
-  {
+  playAlbum: (songs, startIndex = 0) =>{
     if (songs.length === 0) return;
 
     set({
@@ -48,8 +44,7 @@ export const usePlayerStore = create<MusicPlayerStore>((set, get) => ({
   },
 
   // someone clicked on a song
-  setCurrentSong: (song) =>
-  {
+  setCurrentSong: (song) => {
     // if(!song) return;
 
     // it will return -1 if song is not found
@@ -63,14 +58,12 @@ export const usePlayerStore = create<MusicPlayerStore>((set, get) => ({
     });
   },
 
-  togglePlay: () =>
-  {
+  togglePlay: () => {
     const willStartPlaying = !get().isPlaying;
     set({ isPlaying: willStartPlaying });
   },
 
-  playNext: () =>
-  {
+  playNext: () =>{
     const { currentIndex, queue } = get();
     const nextIndex = currentIndex + 1;
 
@@ -87,8 +80,7 @@ export const usePlayerStore = create<MusicPlayerStore>((set, get) => ({
     }
   },
 
-  playPrevious: () =>
-  {
+  playPrevious: () =>{
     const { currentIndex, queue } = get();
     const prevIndex = currentIndex - 1;
 

@@ -26,7 +26,7 @@ const HomePage = () => {
   return (
     <main className='rounded-md overflow-hidden bg-linear-to-b from-zinc-800/55 via-zinc-800/30 to-zinc-900'>
       <Topbar />
-      <ScrollArea className='h-[calc(100vh-180px)]'>
+      <ScrollArea className='h-[calc(100vh-175px)] xl:h-[calc(100vh-165px)]'>
         <div className='p-4 sm:p-6'>
           <h1 className='text-2xl sm:text-3xl font-bold mb-6'>Good Afternoon</h1>
           <FeaturedSongs />

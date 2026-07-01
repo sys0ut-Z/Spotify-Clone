@@ -7,15 +7,13 @@ import { useParams } from 'react-router-dom';
 import AlbumPageSkeleton from './components/AlbumPageSkeleton';
 import { usePlayerStore } from '@/store/player.store';
 
-const formatDuration = (duration: number) =>
-{
+export const formatDuration = (duration: number) => {
   const minutes = Math.floor(duration / 60);
-  const seconds = duration % 60;
+  const seconds = Math.floor(duration % 60);
   return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 }
 
-const AlbumPage = () =>
-{
+const AlbumPage = () => {
   const { albumId } = useParams();
   const { isLoading, fetchAlbumById, currentAlbum } = useMusicStore();
   const {
@@ -23,21 +21,18 @@ const AlbumPage = () =>
     playAlbum, togglePlay,
   } = usePlayerStore();
 
-  const handlePlaySong = (index: number) =>
-  {
-    if (!currentAlbum) return;
-
+  const handlePlaySong = (index: number) => {
+    if(!currentAlbum) return;
     playAlbum(currentAlbum.songs, index);
   }
 
   // on main green button click
-  const handlePlayAlbumMainButton = () =>
-  {
+  const handlePlayAlbumMainButton = () => {
     // ! don't put '!currentSong' condition, first time 'currentSong' would be null and it will return every time
-    if (!currentAlbum) return;
+    if(!currentAlbum) return;
 
     const isCurrentAlbumPlaying = currentAlbum?.songs.some((song) => song._id === currentSong?._id);
-    if (isCurrentAlbumPlaying) {
+    if(isCurrentAlbumPlaying) {
       togglePlay();
     }
     else {
@@ -45,13 +40,12 @@ const AlbumPage = () =>
       playAlbum(currentAlbum?.songs);
     }
   }
-  useEffect(() =>
-  {
-    if (albumId)
+  useEffect(() => {
+    if(albumId)
       fetchAlbumById(albumId);
   }, [albumId, fetchAlbumById]);
 
-  if (isLoading) return <AlbumPageSkeleton />
+  if(isLoading) return <AlbumPageSkeleton />
 
   return (
     <div className='h-full'>
@@ -113,8 +107,7 @@ const AlbumPage = () =>
               {/* Songs List */}
               <div className='space-y-2 py-4'>
                 {
-                  currentAlbum?.songs.map((song, i) =>
-                  {
+                  currentAlbum?.songs.map((song, i) => {
                     const isCurrentSong = song._id === currentSong?._id;
                     return (
                       <div key={song._id}
