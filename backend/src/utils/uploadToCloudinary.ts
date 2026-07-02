@@ -1,5 +1,5 @@
 import type { UploadedFile } from "express-fileupload";
-import cloudinary from "../lib/cloudinary.config.js";
+import cloudinary from "../lib/cloudinaryConfig.js";
 import path from "path";
 import fs from "fs";
 
@@ -9,6 +9,7 @@ export const uploadToCloudinary = async (file: UploadedFile): Promise<string> =>
       folder: "spotify_clone",
       resource_type: "auto",
     }, 
+    // TODO : file unlink bug
     (error, result) => {
       // remove file from tmp folder
       /* 

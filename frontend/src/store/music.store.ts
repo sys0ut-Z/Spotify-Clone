@@ -3,8 +3,7 @@ import { create } from "zustand";
 import type { Album, Song, Stats } from "@/types/index.types";
 import toast from "react-hot-toast";
 
-interface MusicStore
-{
+interface MusicStore {
   albums: Album[];
   isLoading: boolean;
   error: string | null;
@@ -23,7 +22,9 @@ interface MusicStore
   fetchTrendingSongs: () => Promise<void>;
   fetchStats: () => Promise<void>;
   fetchSongs: () => Promise<void>;
+  addSong: (songDetails: FormData) => Promise<void>;
   deleteSong: (songId: string) => Promise<void>;
+  addAlbum: (albumDetails: FormData) => Promise<void>;
   deleteAlbum(albumId: string): Promise<void>;
 }
 
@@ -45,8 +46,7 @@ export const useMusicStore = create<MusicStore>((set, get) => ({
   isSongsLoading: false,
   isStatsLoading: false,
 
-  fetchAlbums: async () =>
-  {
+  fetchAlbums: async () => {
     set({ isLoading: true, error: null });
     try {
       const res = await axiosInstance.get("/album");
@@ -59,8 +59,7 @@ export const useMusicStore = create<MusicStore>((set, get) => ({
     }
   },
 
-  fetchAlbumById: async (albumId) =>
-  {
+  fetchAlbumById: async (albumId) => {
     set({ isLoading: true, error: null });
     try {
       const res = await axiosInstance.get(`/album/${albumId}`);
@@ -73,8 +72,7 @@ export const useMusicStore = create<MusicStore>((set, get) => ({
     }
   },
 
-  fetchMadeForYouSongs: async () =>
-  {
+  fetchMadeForYouSongs: async () => {
     set({ isLoading: true, madeForYouSongs: [], error: null });
     try {
       const res = await axiosInstance.get("/song/made-for-you");
@@ -88,8 +86,7 @@ export const useMusicStore = create<MusicStore>((set, get) => ({
     }
   },
 
-  fetchFeaturedSongs: async () =>
-  {
+  fetchFeaturedSongs: async () => {
     set({ isLoading: true, featuredSongs: [], error: null });
     try {
       const res = await axiosInstance.get("/song/featured");
@@ -102,8 +99,7 @@ export const useMusicStore = create<MusicStore>((set, get) => ({
     }
   },
 
-  fetchTrendingSongs: async () =>
-  {
+  fetchTrendingSongs: async () => {
     set({ isLoading: true, trendingSongs: [], error: null });
     try {
       const res = await axiosInstance.get("/song/trending");
@@ -116,8 +112,7 @@ export const useMusicStore = create<MusicStore>((set, get) => ({
     }
   },
 
-  fetchStats: async () =>
-  {
+  fetchStats: async () => {
     set({
       isStatsLoading: true,
       stats: { totalSongs: 0, totalAlbums: 0, totalArtists: 0, totalUsers: 0 },
@@ -134,8 +129,7 @@ export const useMusicStore = create<MusicStore>((set, get) => ({
     }
   },
 
-  fetchSongs: async () =>
-  {
+  fetchSongs: async () => {
     set({ isSongsLoading: true, allSongs: [], error: null });
     try {
       const res = await axiosInstance.get("/song");
@@ -148,8 +142,27 @@ export const useMusicStore = create<MusicStore>((set, get) => ({
     }
   },
 
-  deleteSong: async (songId) =>
-  {
+  addSong: async (songDetails) => {
+    set({ isSongsLoading: true, error: null });
+    try {
+      const res = await axiosInstance.post("/admin/add-song", songDetails, { 
+        headers: { 
+          "Content-Type": "multipart/form-data" 
+        } 
+      });
+      set(state => ({
+        allSongs: [res.data.song, ...state.allSongs]
+      }));
+      toast.success(res.data.message || "Song added successfully");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Something went wrong while adding song");
+    }
+    finally {
+      set({ isSongsLoading: false });
+    }
+  },
+
+  deleteSong: async (songId) => {
     set({ isSongsLoading: true, error: null });
     try {
       await axiosInstance.delete(`/admin/delete-song/${songId}`);
@@ -166,6 +179,26 @@ export const useMusicStore = create<MusicStore>((set, get) => ({
     }
   },
 
+  addAlbum: async (albumDetails) => {
+    set({ isLoading: true, error: null });
+    try {
+      const res = await axiosInstance.post("/admin/add-album", albumDetails, { 
+        headers: { 
+          "Content-Type": "multipart/form-data" 
+        } 
+      });
+      set(state => ({
+        albums: [res.data.album, ...state.albums]
+      }));
+      toast.success(res.data.message || "Album added successfully");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Something went wrong while adding album");
+    }
+    finally {
+      set({ isLoading: false });
+    }
+  },
+  
   deleteAlbum: async (albumId) => {
     set({ isLoading: true, error: null });
     try {

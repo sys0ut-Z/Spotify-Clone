@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useMusicStore } from '@/store/music.store'
 import { Calendar, Trash2 } from 'lucide-react';
-import SongsTableSkeleton from './SongsTableTabSkeleton';
+import SongsTableSkeleton from './skeletons/SongsTableTabSkeleton';
 
 const SongsTable = () => {
   const {allSongs, isSongsLoading, error, deleteSong} = useMusicStore();

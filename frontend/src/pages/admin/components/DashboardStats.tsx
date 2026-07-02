@@ -1,7 +1,7 @@
 import { useMusicStore } from '@/store/music.store';
 import { Library, ListMusic, PlayCircle, Users2 } from 'lucide-react';
 import StatsCard from './StatsCard';
-import DashboardStatsSkeleton from './DashboardStatsSkeleton';
+import DashboardStatsSkeleton from './skeletons/DashboardStatsSkeleton';
 
 const DashboardStats = () => {
   const {stats, isStatsLoading} = useMusicStore();

@@ -1,4 +1,4 @@
-import dotenv from "dotenv"; // or 'dotenv/config'
+import "dotenv/config";
 import express from "express";
 import cors from 'cors';
 import userRouter from "./routes/user.routes.js";
@@ -14,20 +14,12 @@ import { clerkMiddleware } from "@clerk/express";
 import fileUpload from 'express-fileupload';
 import path from 'path';
 
-dotenv.config();
-
+const __dirname = path.resolve();
 const app = express();
 const PORT = process.env.PORT || 5006;
-const __dirname = path.resolve();
 
 app.use(express.json()); // for parsing json
 app.use(clerkMiddleware()); // it will attach 'auth' object to request
-
-app.use(cors({
-  origin: 'http://localhost:5173',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
-}));
 
 app.use(fileUpload({
   useTempFiles: true, // enable sotring temp files
@@ -37,6 +29,13 @@ app.use(fileUpload({
     fileSize: 5 * 1024 * 1024, //
   }
 }));
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 
 app.use("/api/user", userRouter);
 app.use("/api/admin", adminRouter);

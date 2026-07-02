@@ -7,11 +7,18 @@ import { Plus, Upload } from 'lucide-react';
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast';
 
+interface NewSong{
+  title: string;
+  artist: string;
+  albumId: string;
+  duration: number;
+};
+
 const AddSongDialog = () => {
-  const {albums} = useMusicStore();
+  const {albums, addSong} = useMusicStore();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [newSong, setNewSong] = useState({
+  const [newSong, setNewSong] = useState<NewSong>({
     title: "",
     artist: "",
     albumId: "",
@@ -33,8 +40,8 @@ const AddSongDialog = () => {
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append("audio", files.audio);
-    formData.append("image", files.image);
+    formData.append("audioFile", files.audio);
+    formData.append("imageFile", files.image);
     formData.append("title", newSong.title);
     formData.append("artist", newSong.artist);
     formData.append("duration", newSong.duration.toString());
@@ -42,6 +49,14 @@ const AddSongDialog = () => {
     if(newSong.albumId && newSong.albumId !== "none"){
       formData.append("album", newSong.albumId);
     }
+
+    await addSong(formData);
+    
+    setIsLoading(false);
+
+    // reset states
+    setFiles({audio: null, image: null});
+    setNewSong({title: "", artist: "", albumId: "", duration: 0});
   }
 
   return (
@@ -55,6 +70,7 @@ const AddSongDialog = () => {
         </Button>
       </DialogTrigger>
 
+      {/* Content Body */}
       <DialogContent className='bg-zinc-900 border-zinc-700 max-h-[80vh] overflow-auto min-w-100 sm:min-w-120'>
         <DialogHeader>
           <DialogTitle>Add new song</DialogTitle>
@@ -134,7 +150,7 @@ const AddSongDialog = () => {
 						<label className='text-sm font-medium'>Artist</label>
 						<Input
 							value={newSong.artist}
-							onChange={(e) => setNewSong({ ...newSong, title: e.target.value })}
+							onChange={(e) => setNewSong({ ...newSong, artist: e.target.value })}
 							className='bg-zinc-800 border-zinc-700'
 						/>
 					</div>
@@ -176,7 +192,7 @@ const AddSongDialog = () => {
 					</div>
         </div>
 
-        {/* Buttons */}
+        {/* Footer Buttons */}
         <DialogFooter>
           <Button 
             variant='outline' 
@@ -187,7 +203,7 @@ const AddSongDialog = () => {
 					</Button>
 					<Button 
             onClick={handleSubmit} 
-            disabled={isLoading}
+            disabled={isLoading || !files.image || !files.audio || !newSong.title || !newSong.artist}
           >
 						{isLoading ? "Uploading..." : "Add Song"}
 					</Button>
