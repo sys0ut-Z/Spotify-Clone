@@ -9,11 +9,11 @@ import { HomeIcon, Library, MessageCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const LeftSidebar = () => {
-  const {isLoading, albums, fetchAlbums} = useMusicStore();
+  const {isAlbumsLoading, albums, fetchAlbums} = useMusicStore();
 
   useEffect(() => {
     fetchAlbums();
-  }, [fetchAlbums]);
+  }, []);
 
   // console.log({albums});
   return (
@@ -53,7 +53,7 @@ const LeftSidebar = () => {
         <ScrollArea className='h-[calc(100vh-300px)]'>
           <div className='space-y-2'>
             {
-              isLoading ? (
+              isAlbumsLoading ? (
                 <PlaylistSkeleton />
               ) : (
                 <div>

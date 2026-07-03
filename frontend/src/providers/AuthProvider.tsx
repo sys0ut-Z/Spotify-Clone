@@ -3,6 +3,7 @@ import { useAuth } from '@clerk/react';
 import React, { createContext, useEffect, useState } from 'react'
 import {Loader} from 'lucide-react';
 import { useAuthStore } from '@/store/auth.store';
+import { useChatStore } from '@/store/chat.store';
 
 const AuthContext = createContext({});
 
@@ -19,8 +20,9 @@ const updateApiToken = (token: string | null) => {
 }
 
 const AuthProvider = ({children}: {children: React.ReactNode}) => {
-  const {getToken} = useAuth();
+  const {getToken, userId} = useAuth();
   const {checkAdminStatus} = useAuthStore();
+  const {initSocket, disconnectSocket} = useChatStore();
 
   const [loading, setLoading] = useState(false);
 
@@ -33,7 +35,11 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
         // if token is present, user is authenticated, check for admin
         if(token){
           updateApiToken(token);
-          checkAdminStatus();
+          await checkAdminStatus();
+          
+          // initialize socket
+          if(userId)
+            initSocket(userId);
         }
       } catch (error) {
         updateApiToken(null);
@@ -43,10 +49,13 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
       finally{
         setLoading(false);
       }
-    }
 
+      // when user closes browser
+    }
+    
     initAuth();
-  }, [getToken]);
+    return () => disconnectSocket();
+  }, [userId]);
 
   if(loading){
     return (

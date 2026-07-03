@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 interface MusicStore {
   albums: Album[];
   isLoading: boolean;
+  isAlbumsLoading: boolean;
   error: string | null;
   currentAlbum: Album | null;
   madeForYouSongs: Song[];
@@ -31,6 +32,7 @@ interface MusicStore {
 export const useMusicStore = create<MusicStore>((set, get) => ({
   albums: [],
   isLoading: false,
+  isAlbumsLoading: false,
   error: null,
   currentAlbum: null,
   madeForYouSongs: [],
@@ -47,7 +49,7 @@ export const useMusicStore = create<MusicStore>((set, get) => ({
   isStatsLoading: false,
 
   fetchAlbums: async () => {
-    set({ isLoading: true, error: null });
+    set({ isAlbumsLoading: true, error: null });
     try {
       const res = await axiosInstance.get("/album");
       set({ albums: res.data.albums });
@@ -55,7 +57,7 @@ export const useMusicStore = create<MusicStore>((set, get) => ({
     } catch (error: any) {
       set({ error: error.response?.data?.message || "Something went wrong while fetching albums" });
     } finally {
-      set({ isLoading: false });
+      set({ isAlbumsLoading: false });
     }
   },
 

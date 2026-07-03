@@ -24,6 +24,7 @@ export const initializeSocket = (httpServer: HttpServer) => {
   // 'on' is event listener
   io.on("connection", (socket) => {
 
+    // ~ below 'on'(s) -> listener for user
     // once user gets connected, add it in onlineUsers socket
     socket.on("user_connected", (userId: string) => {
       userSockets.set(userId, socket.id);
@@ -32,7 +33,7 @@ export const initializeSocket = (httpServer: HttpServer) => {
 
       // broadcast to all connected users(sockets)
       // let everyone know that user has come online
-      io.emit("user_connected", userId);
+      io.emit("user_online", userId); // ? 'user_connected'
 
       // let current user know which users are online
       socket.emit("online_users", Array.from(userSockets.keys()));

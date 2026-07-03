@@ -15,7 +15,7 @@ export const formatDuration = (duration: number) => {
 
 const AlbumPage = () => {
   const { albumId } = useParams();
-  const { isLoading, fetchAlbumById, currentAlbum } = useMusicStore();
+  const { isAlbumsLoading, fetchAlbumById, currentAlbum } = useMusicStore();
   const {
     currentSong, isPlaying,
     playAlbum, togglePlay,
@@ -45,7 +45,7 @@ const AlbumPage = () => {
       fetchAlbumById(albumId);
   }, [albumId, fetchAlbumById]);
 
-  if(isLoading) return <AlbumPageSkeleton />
+  if(isAlbumsLoading) return <AlbumPageSkeleton />
 
   return (
     <div className='h-full'>

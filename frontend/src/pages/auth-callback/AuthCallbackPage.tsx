@@ -13,13 +13,24 @@ const AuthCallbackPage = () => {
   const syncAttempted = useRef(false);
   const navigate = useNavigate();
 
+  console.log("AuthcallbackPage");
+
   useEffect(() => {
     const syncUser = async () => {
-      // console.log("isloaded", isLoaded);
+      // console.log({
+      //   user, isLoaded
+      // });
       if(!isLoaded || !user || syncAttempted.current) return;
       // console.log("user", user);
 
       try {
+        // console.log({
+        //   id: user.id,
+        //   firstName: user.firstName,
+        //   lastName: user.lastName,
+        //   imageUrl: user.imageUrl
+        // });
+
         await axiosInstance.post("/auth/callback", {
           id: user.id,
           firstName: user.firstName,
@@ -38,7 +49,7 @@ const AuthCallbackPage = () => {
     }
 
     syncUser();
-  }, [isLoaded, user, navigate]);
+  }, [isLoaded, user, syncAttempted]);
 
   return (
     <div className="h-screen w-full bg-black flex items-center justify-center">

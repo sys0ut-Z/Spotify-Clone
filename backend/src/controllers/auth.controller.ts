@@ -9,6 +9,10 @@ const authCallback = async (
   try {
     const { id, firstName, lastName, imageUrl } = req.body;
 
+    console.log({
+      id, firstName, lastName, imageUrl
+    });
+    
     // console.log({id, firstName, lastName, imageUrl});
     
     // check if user is already logged in
@@ -16,6 +20,7 @@ const authCallback = async (
 
     // if user does not exist, add in db
     if (!user) {
+      console.log("if entered...");
       await UserModel.create({
         clerkId: id,
         fullName: `${firstName} ${lastName}`,

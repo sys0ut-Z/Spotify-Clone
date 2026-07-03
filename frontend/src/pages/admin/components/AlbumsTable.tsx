@@ -5,13 +5,13 @@ import { Calendar, Music, Trash2 } from 'lucide-react';
 import AlbumsTableSkeleton from './skeletons/AlbumsTableTabSkeleton';
 
 const AlbumsTable = () => {
-  const {albums, isLoading, error, deleteAlbum} = useMusicStore();
+  const {albums, isAlbumsLoading, error, deleteAlbum} = useMusicStore();
 
   const handleDeleteAlbum = (albumId: string) => {
     deleteAlbum(albumId);
   }
 
-  if(isLoading) return <AlbumsTableSkeleton />
+  if(isAlbumsLoading) return <AlbumsTableSkeleton />
 
   if(error) {
     return (
