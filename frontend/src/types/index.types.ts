@@ -33,3 +33,9 @@ export interface Stats{
   totalArtists: number;
   totalUsers: number;
 }
+
+export interface Message{
+  senderId: string;
+  receiverId: string;
+  content: string;
+}

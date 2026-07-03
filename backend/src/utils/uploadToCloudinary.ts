@@ -1,5 +1,5 @@
 import type { UploadedFile } from "express-fileupload";
-import cloudinary from "../lib/cloudinaryConfig.js";
+import cloudinary from "../lib/cloudinary.js";
 import path from "path";
 import fs from "fs";
 

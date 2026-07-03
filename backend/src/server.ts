@@ -7,16 +7,24 @@ import authRouter from "./routes/auth.routes.js";
 import albumRouter from "./routes/albums.routes.js";
 import songRouter from "./routes/songs.routes.js";
 import statsRouter from "./routes/stats.routes.js";
-import { connectDB } from "./lib/db.config.js";
+import { connectDB } from "./lib/db.js";
 import { AppError } from "./utils/GlobalErrorHandler.js";
 import { errorMiddleware } from "./middlewares/error.middleware.js";
 import { clerkMiddleware } from "@clerk/express";
 import fileUpload from 'express-fileupload';
 import path from 'path';
+import { createServer } from "http";
+import { initializeSocket } from "./lib/socket.js";
+
+export const FRONTEND_URL = process.env.NODE_ENV === "development" ? "http://localhost:5173" : "";
 
 const __dirname = path.resolve();
 const app = express();
 const PORT = process.env.PORT || 5006;
+
+// initialize socket
+const httpServer = createServer(app);
+initializeSocket(httpServer);
 
 app.use(express.json()); // for parsing json
 app.use(clerkMiddleware()); // it will attach 'auth' object to request
@@ -31,7 +39,7 @@ app.use(fileUpload({
 }));
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: FRONTEND_URL,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
@@ -47,7 +55,7 @@ app.use("/api/stats", statsRouter);
 const startServer = async () => {
   try {
     await connectDB();
-    app.listen(PORT, () => {
+    httpServer.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   } catch (error) {

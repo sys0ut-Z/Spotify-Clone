@@ -9,5 +9,6 @@ const userRouter = Router();
 // get all users to show in right panel
 // user should be authenticated to see all the users
 userRouter.get("/", authMiddleware, userController.getAllUsers);
+userRouter.get("/messages/:userId", authMiddleware, userController.getAllMessages);
 
 export default userRouter;

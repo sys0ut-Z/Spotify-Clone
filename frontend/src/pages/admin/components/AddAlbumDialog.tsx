@@ -62,7 +62,7 @@ const AddAlbumDialog = () => {
 					<input
 						type='file'
 						ref={fileInputRef}
-						onChange={(e) => setImageFile(e.target.files?.[0])}
+						onChange={(e) => setImageFile(e.target.files![0])}
 						accept='image/*'
 						className='hidden'
 					/>
