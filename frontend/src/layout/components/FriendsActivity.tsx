@@ -7,8 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const FriendsActivity = () => {
   const {user} = useUser();
-  const {isLoading, users, fetchUsers} = useChatStore();
-  const isPlaying = true;
+  const {isLoading, users, fetchUsers, onlineUsers, userActivities} = useChatStore();
 
   useEffect(() => {
     if(user)
@@ -36,52 +35,60 @@ const FriendsActivity = () => {
       <ScrollArea className='flex-1'>
         <div className='p-4 space-y-4'>
           {
-            users?.map((user) => (
-              <div key={user.clerkId} className='cursor-pointer hover:bg-zinc-800/50 p-3 rounded-md'>
-                <div className='flex items-start gap-3'>
-                  {/* Avatar */}
-                  <div className='relative'>
-                    <Avatar className='size-10 border border-zinc-800'>
-                      <AvatarImage src={user.imageUrl} alt={user.fullName}/>
-                      <AvatarFallback>{user.fullName[0]}</AvatarFallback>
-                    </Avatar>
-                  </div>
-                  
-                  {/* Avatar Badge(dynamic) */}
-                  <div className={`absolute bottom-0 right-0 size-3 rounded-full border-2 border-zinc-900 bg-zinc-500`}
-                    aria-hidden='true'
-                  >
-                  </div>
+            users?.map((user) => {
+              const activity = userActivities.get(user.clerkId);
+              const isPlaying = activity && activity !== "Idle";
 
-                  <div className='flex-1 min-w-0'>
-                    <div className='flex items-center gap-2'>
-                      <span
-                        className='font-medium text-sm text-white'
-                      >{user.fullName}</span>
-
-                      {/* If user is listening songs */}
-                      {isPlaying && <Music className='size-3.5 text-emerald-400 shrink-0'/>}
+              return (
+                <div key={user.clerkId} className='cursor-pointer hover:bg-zinc-800/50 p-3 rounded-md'>
+                  <div className='flex items-start gap-3'>
+                    {/* Avatar */}
+                    <div className='relative'>
+                      <Avatar className='size-10 border border-zinc-800'>
+                        <AvatarImage src={user.imageUrl} alt={user.fullName}/>
+                        <AvatarFallback>{user.fullName[0]}</AvatarFallback>
+                      </Avatar>
+                    </div>
+                    
+                    {/* Avatar Badge(dynamic) */}
+                    <div className={`absolute bottom-0 right-0 size-3 rounded-full border-2 border-zinc-900
+                      ${onlineUsers.has(user.clerkId) ? "bg-green-500" : "bg-zinc-900"}`}
+                      aria-hidden='true'
+                    >
                     </div>
 
-                    {/* // TODO : This will be dynamic later */ }
-                    {
-                      isPlaying ? (
-                        <div className='mt-1'>
-                          <div className="mt-1 text-sm text-white font-medium truncate">
-                            Cardigan
+                    <div className='flex-1 min-w-0'>
+                      <div className='flex items-center gap-2'>
+                        <span
+                          className='font-medium text-sm text-white'
+                        >{user.fullName}</span>
+
+                        {/* If user is listening songs */}
+                        {isPlaying && <Music className='size-3.5 text-emerald-400 shrink-0'/>}
+                      </div>
+
+                      {/* // TODO : This will be dynamic later */ }
+                      {
+                        isPlaying ? (
+                          <div className='mt-1'>
+                            <div className="mt-1 text-sm text-white font-medium truncate">
+                              {activity.replace("Playing ", "").split(" by ")[0]}
+                            </div>
+                            <div className='text-xs text-zinc-400 truncate'>
+                              by {activity.split(" by ")[1]}
+                            </div>
                           </div>
-                          <div className='text-xs text-zinc-400 truncate'>by Justin Bieber</div>
-                        </div>
-                      ) : (
-                        <div className='mt-1 text-xs text-zinc-400'>
-                          Idle
-                        </div>
-                      )
-                    }
+                        ) : (
+                          <div className='mt-1 text-xs text-zinc-400'>
+                            Idle
+                          </div>
+                        )
+                      }
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
+              )
+            })
           }
         </div>
       </ScrollArea>

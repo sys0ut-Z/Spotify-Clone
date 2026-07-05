@@ -1,5 +1,6 @@
 import type { Song } from "@/types/index.types";
 import { create } from "zustand";
+import { useChatStore } from "./chat.store";
 
 interface MusicPlayerStore{
   currentSong: Song | null;
@@ -35,9 +36,19 @@ export const usePlayerStore = create<MusicPlayerStore>((set, get) => ({
   playAlbum: (songs, startIndex = 0) =>{
     if (songs.length === 0) return;
 
+    const song = songs[startIndex];
+
+    const clientSocket = useChatStore.getState().clientSocket;
+    if(clientSocket?.auth){
+      clientSocket.emit("update_activity", {
+        userId: clientSocket.auth.userId,
+        activity: `Playing ${song.title} by ${song.artist}`
+      })
+    }
+
     set({
       queue: songs,
-      currentSong: songs[startIndex],
+      currentSong: song,
       currentIndex: startIndex,
       isPlaying: true,
     });
@@ -50,6 +61,14 @@ export const usePlayerStore = create<MusicPlayerStore>((set, get) => ({
     // it will return -1 if song is not found
     const songIndex = get().queue.findIndex(s => s._id === song._id);
 
+    const clientSocket = useChatStore.getState().clientSocket;
+    if(clientSocket?.auth){
+      clientSocket.emit("update_activity", {
+        userId: clientSocket.auth.userId,
+        activity: `Playing ${song.title} by ${song.artist}`
+      })
+    }
+
     set({
       currentSong: song,
       isPlaying: true,
@@ -60,6 +79,18 @@ export const usePlayerStore = create<MusicPlayerStore>((set, get) => ({
 
   togglePlay: () => {
     const willStartPlaying = !get().isPlaying;
+    const currentSong = get().currentSong;
+
+    const clientSocket = useChatStore.getState().clientSocket;
+    if(clientSocket?.auth){
+      clientSocket.emit("update_activity", {
+        userId: clientSocket.auth.userId,
+        activity: willStartPlaying && currentSong ? 
+                `Playing ${currentSong.title} by ${currentSong.artist}` : 
+                "Idle"
+      })
+    }
+
     set({ isPlaying: willStartPlaying });
   },
 
@@ -68,8 +99,18 @@ export const usePlayerStore = create<MusicPlayerStore>((set, get) => ({
     const nextIndex = currentIndex + 1;
 
     if (nextIndex < queue.length) {
+      const nextSong = queue[nextIndex];
+
+      const clientSocket = useChatStore.getState().clientSocket;
+      if(clientSocket?.auth){
+        clientSocket.emit("update_activity", {
+          userId: clientSocket.auth.userId,
+          activity: `Playing ${nextSong.title} by ${nextSong.artist}`
+        })
+      }
+
       set({
-        currentSong: queue[nextIndex],
+        currentSong: nextSong,
         currentIndex: nextIndex,
         isPlaying: true
       })
@@ -77,6 +118,14 @@ export const usePlayerStore = create<MusicPlayerStore>((set, get) => ({
     else {
       // * queue is over, stop the player
       set({ isPlaying: false });
+
+      const clientSocket = useChatStore.getState().clientSocket;
+      if(clientSocket?.auth){
+        clientSocket.emit("update_activity", {
+          userId: clientSocket.auth.userId,
+          activity: "Idle"
+        })
+      }
     }
   },
 
@@ -85,6 +134,16 @@ export const usePlayerStore = create<MusicPlayerStore>((set, get) => ({
     const prevIndex = currentIndex - 1;
 
     if (currentIndex >= 0) {
+      const prevSong = queue[prevIndex];
+
+      const clientSocket = useChatStore.getState().clientSocket;
+      if(clientSocket?.auth){
+        clientSocket.emit("update_activity", {
+          userId: clientSocket.auth.userId,
+          activity: `Playing ${prevSong.title} by ${prevSong.artist}`
+        })
+      }
+
       set({
         currentSong: queue[prevIndex],
         currentIndex: prevIndex,
@@ -94,6 +153,14 @@ export const usePlayerStore = create<MusicPlayerStore>((set, get) => ({
     else {
       // no previous song to play, stop the player
       set({ isPlaying: false });
+
+      const clientSocket = useChatStore.getState().clientSocket;
+      if(clientSocket?.auth){
+        clientSocket.emit("update_activity", {
+          userId: clientSocket.auth.userId,
+          activity: "Idle"
+        })
+      }
     }
   },
 }));

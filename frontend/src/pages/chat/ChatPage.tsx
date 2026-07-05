@@ -7,6 +7,13 @@ import ChatHeader from './components/ChatHeader';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
+const formatMessageTime = (date: string) => {
+  return new Date(date).toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true, // ? 'false'
+  });
+}
 const ChatPage = () => {
   const {user} = useUser();
   const {messages, selectedUser, fetchUsers, fetchMessages} = useChatStore();
@@ -54,8 +61,8 @@ const ChatPage = () => {
                             <p className='text-sm'>
                               {message.content}
                             </p>
-                            <span>
-                              
+                            <span className='text-xs text-zinc-300 mt-1 block'>
+                              {formatMessageTime(message.createdAt)}
                             </span>
                           </div>
                         </div>
@@ -63,6 +70,7 @@ const ChatPage = () => {
                     }
                   </div>
                 </ScrollArea>
+                
               </>
             ) : (
               <NoConversationPlaceholder />

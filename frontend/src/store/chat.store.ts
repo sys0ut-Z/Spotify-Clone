@@ -2,14 +2,14 @@ import { axiosInstance } from "@/lib/axios";
 import type { Message, User } from "@/types/index.types";
 import { create } from "zustand";
 import { io } from "socket.io-client";
-import {Socket as ClientSocket} from 'socket.io-client';
+// import {Socket as ClientSocket} from 'socket.io-client';
 
 interface ChatStore{
   users: User[];
   isLoading: boolean;
   isMessagesLoading: boolean;
   error: string | null;
-  clientSocket: ClientSocket | null;
+  clientSocket: any;
   isConnected: boolean;
   onlineUsers: Set<string>;
   userActivities: Map<string, string>;
@@ -18,7 +18,7 @@ interface ChatStore{
   fetchUsers: () => Promise<void>;
   initSocket: (userId: string) => void;
   disconnectSocket: () => void;
-  sendMessage: (data: Message) => void;
+  sendMessage: (content: string, senderId: string, receiverId: string) => void;
   fetchMessages: (receiverId: string) => Promise<void>;
   setSelectedUser: (user: User | null) => void;
 };
@@ -34,7 +34,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   isLoading: false,
   isMessagesLoading: false,
   error: null,
-  clientSocket: null,
+  clientSocket: socket,
   isConnected: false,
   onlineUsers: new Set(),
   userActivities: new Map(),
@@ -99,10 +99,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         });
       });
 
-      set({
-        clientSocket: socket,
-        isConnected: true
-      });
+      set({ isConnected: true });
     }
   },
 
@@ -116,11 +113,15 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
   setSelectedUser: (user) => set({ selectedUser: user }),
   
-  sendMessage: (data) => {
+  sendMessage: (content, senderId, receiverId) => {
     const { isConnected, clientSocket } = get();
     if(!isConnected || !clientSocket) return;
 
-    clientSocket.emit("send_message", data);
+    clientSocket.emit("send_message", {
+      content,
+      senderId,
+      receiverId
+    });
   },
   
   fetchMessages: async (receiverId) => {
