@@ -18,8 +18,8 @@ export const initializeSocket = (httpServer: HttpServer) => {
   });
 
   // online users
-  const userSockets = new Map<string, string>(); // {userId: socketId}
-  const userActivities = new Map<string, string>(); // {userId: activity}
+  const userSockets = new Map<string, string>(); // {userId(clerkId): socketId}
+  const userActivities = new Map<string, string>(); // {userId(clerkId): activity}
 
   // 'on' is event listener
   io.on("connection", (socket) => {
@@ -33,10 +33,10 @@ export const initializeSocket = (httpServer: HttpServer) => {
 
       // broadcast to all connected users(sockets)
       // let everyone know that user has come online
-      io.emit("user_online", userId); // ? 'user_connected'
+      io.emit("online_users", userId); // ? 'user_connected'
 
       // let current user know which users are online
-      socket.emit("online_users", Array.from(userSockets.keys()));
+      socket.emit("users_online", Array.from(userSockets.keys()));
 
       // let everyone know of current user activities
       io.emit("user_activities", Array.from(userActivities));

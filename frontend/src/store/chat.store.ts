@@ -48,8 +48,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       socket.emit("user_connected", userId);
 
       // * use 'on' : listen to the emitted events from server
-      // ? 'online_users'
-      socket.on("user_online", (users: string[]) => {
+      socket.on("users_online", (users: string[]) => {
         set({ onlineUsers: new Set(users) });
       });
 
@@ -58,7 +57,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       });
 
       // add in online users
-      socket.on("user_connected", (userId: string) => {
+      // ? 'user_connected'
+      socket.on("online_users", (userId: string) => {
+        console.log("user connected", userId);
         set(state => ({ 
           onlineUsers: new Set([...state.onlineUsers, userId]) 
         }));

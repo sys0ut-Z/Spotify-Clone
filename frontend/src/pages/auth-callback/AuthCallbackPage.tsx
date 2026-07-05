@@ -17,26 +17,26 @@ const AuthCallbackPage = () => {
 
   useEffect(() => {
     const syncUser = async () => {
-      // console.log({
-      //   user, isLoaded
-      // });
+      console.log({
+        user, isLoaded
+      });
       if(!isLoaded || !user || syncAttempted.current) return;
-      // console.log("user", user);
+      console.log("user", user);
 
       try {
-        // console.log({
-        //   id: user.id,
-        //   firstName: user.firstName,
-        //   lastName: user.lastName,
-        //   imageUrl: user.imageUrl
-        // });
+        console.log({
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          imageUrl: user.imageUrl
+        });
 
         await axiosInstance.post("/auth/callback", {
           id: user.id,
           firstName: user.firstName,
           lastName: user.lastName,
           imageUrl: user.imageUrl // image url from clerk(google profile pic)
-        })
+        });
         syncAttempted.current = true;
       } catch (error) {
         console.log("Error in auth callback", error);

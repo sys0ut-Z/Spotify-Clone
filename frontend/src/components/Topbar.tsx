@@ -1,4 +1,4 @@
-import { Show, SignOutButton, UserButton } from '@clerk/react';
+import { Show, UserButton } from '@clerk/react';
 import { LayoutDashboardIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SigninOAuthButtons from './SigninOAuthButtons.tsx';

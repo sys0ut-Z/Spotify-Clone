@@ -9,6 +9,10 @@ const authCallback = async (
   try {
     const { id, firstName, lastName, imageUrl } = req.body;
 
+    if(!firstName || !lastName){
+      throw new Error("firstName and lastName are required");
+    }
+    
     console.log({
       id, firstName, lastName, imageUrl
     });
