@@ -10,7 +10,7 @@ interface AuthStore {
   reset: () => void // to reset states
 };
 
-export const useAuthStore = create<AuthStore>((set, get) => ({
+export const useAuthStore = create<AuthStore>((set) => ({
   isAdmin: false,
   error: null,
   isLoading: false,

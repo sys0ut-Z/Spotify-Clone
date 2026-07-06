@@ -2,7 +2,7 @@ import { useChatStore } from '@/store/chat.store'
 import { useUser } from '@clerk/react';
 import { HeadphonesIcon, Music, Users } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const FriendsActivity = () => {

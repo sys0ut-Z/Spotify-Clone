@@ -7,6 +7,7 @@ import AlbumPage from './pages/album/AlbumPage';
 import AdminPage from './pages/admin/AdminPage';
 import { Toaster } from 'react-hot-toast';
 import AuthSync from './components/AuthSync';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App(){
   return (
@@ -22,6 +23,7 @@ function App(){
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/albums/:albumId" element={<AlbumPage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   )

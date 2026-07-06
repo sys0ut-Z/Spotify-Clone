@@ -29,7 +29,7 @@ interface MusicStore {
   deleteAlbum(albumId: string): Promise<void>;
 }
 
-export const useMusicStore = create<MusicStore>((set, get) => ({
+export const useMusicStore = create<MusicStore>((set) => ({
   albums: [],
   isLoading: false,
   isAlbumsLoading: false,

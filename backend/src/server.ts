@@ -52,6 +52,15 @@ app.use("/api/album", albumRouter);
 app.use("/api/song", songRouter);
 app.use("/api/stats", statsRouter);
 
+if(process.env.NODE_ENV === "production") {
+  // static assets in 'dist' folder that would be served in production
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+  
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  })
+}
+
 const startServer = async () => {
   try {
     await connectDB();
