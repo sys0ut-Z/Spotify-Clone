@@ -8,14 +8,6 @@ const authCallback = async (
 ) => {
   try {
     const { id, firstName, lastName, imageUrl } = req.body;
-
-    if(!firstName || !lastName){
-      throw new Error("firstName and lastName are required");
-    }
-    
-    console.log({
-      id, firstName, lastName, imageUrl
-    });
     
     // console.log({id, firstName, lastName, imageUrl});
     
@@ -24,10 +16,10 @@ const authCallback = async (
 
     // if user does not exist, add in db
     if (!user) {
-      console.log("if entered...");
+      // console.log("if entered...");
       await UserModel.create({
         clerkId: id,
-        fullName: `${firstName} ${lastName}`,
+        fullName: `${firstName || ""} ${lastName || ""}`,
         imageUrl
       });
     }

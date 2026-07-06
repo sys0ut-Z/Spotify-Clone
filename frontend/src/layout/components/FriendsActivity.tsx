@@ -48,14 +48,14 @@ const FriendsActivity = () => {
                         <AvatarImage src={user.imageUrl} alt={user.fullName}/>
                         <AvatarFallback>{user.fullName[0]}</AvatarFallback>
                       </Avatar>
+                      {/* Avatar Badge(dynamic) */}
+                      <div className={`absolute bottom-0 right-0 size-3 rounded-full border-2 border-zinc-900
+                        ${onlineUsers.has(user.clerkId) ? "bg-green-500" : "bg-zinc-900"}`}
+                        aria-hidden='true'
+                      >
+                      </div>
                     </div>
                     
-                    {/* Avatar Badge(dynamic) */}
-                    <div className={`absolute bottom-0 right-0 size-3 rounded-full border-2 border-zinc-900
-                      ${onlineUsers.has(user.clerkId) ? "bg-green-500" : "bg-zinc-900"}`}
-                      aria-hidden='true'
-                    >
-                    </div>
 
                     <div className='flex-1 min-w-0'>
                       <div className='flex items-center gap-2'>

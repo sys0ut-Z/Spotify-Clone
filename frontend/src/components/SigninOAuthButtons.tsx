@@ -8,8 +8,8 @@ const SigninOAuthButtons = () => {
     // ? sso <- authenticateWithRedirect 
     await signIn.sso({
       strategy: "oauth_google",
-      redirectCallbackUrl: "/sso-callback",
-      redirectUrl: "/auth-callback" // on completion
+      redirectCallbackUrl: "/sso-callback", // used when Clerk still needs to process the OAuth session handling
+      redirectUrl: "/"
     });
   }
 

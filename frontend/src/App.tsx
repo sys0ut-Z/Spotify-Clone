@@ -1,21 +1,20 @@
 import { Route, Routes } from 'react-router-dom';
 import HomePage from './pages/home/HomePage';
-import AuthCallbackPage from './pages/auth-callback/AuthCallbackPage';
 import { AuthenticateWithRedirectCallback } from '@clerk/react';
 import MainLayout from './layout/MainLayout';
 import ChatPage from './pages/chat/ChatPage';
 import AlbumPage from './pages/album/AlbumPage';
 import AdminPage from './pages/admin/AdminPage';
 import { Toaster } from 'react-hot-toast';
+import AuthSync from './components/AuthSync';
 
 function App(){
   return (
     <>
       <Toaster />
+      <AuthSync />
       <Routes>
-        <Route path="/sso-callback" element={<AuthenticateWithRedirectCallback signInForceRedirectUrl={'/auth-callback'} />} />
-        {/* when user gets authenticated, redirect to auth-callback */}
-        <Route path="/auth-callback" element={<AuthCallbackPage />} />
+        <Route path="/sso-callback" element={<AuthenticateWithRedirectCallback />} />
         <Route path="/admin" element={<AdminPage />} />
 
         <Route element={<MainLayout />}>

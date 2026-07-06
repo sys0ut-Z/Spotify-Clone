@@ -6,6 +6,7 @@ import UsersList from './components/UsersList';
 import ChatHeader from './components/ChatHeader';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import MessageInput from './components/MessageInput';
 
 const formatMessageTime = (date: string) => {
   return new Date(date).toLocaleTimeString("en-IN", {
@@ -28,6 +29,12 @@ const ChatPage = () => {
     if(selectedUser)
       fetchMessages(selectedUser._id);
   }, [selectedUser]);
+
+  // console.log({
+  //   senderId: messages[0]?.senderId,
+  //   userId: user?.id,
+  //   receiverId: selectedUser?.clerkId
+  // });
 
   return (
     <main className='h-full rounded-lg bg-linear-to-b from-zinc-800 to-zinc-900 overflow-hidden'>
@@ -70,7 +77,7 @@ const ChatPage = () => {
                     }
                   </div>
                 </ScrollArea>
-                
+                <MessageInput />
               </>
             ) : (
               <NoConversationPlaceholder />

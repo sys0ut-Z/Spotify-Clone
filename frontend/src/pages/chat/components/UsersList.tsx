@@ -15,7 +15,7 @@ const UsersList = () => {
               isLoading ? (
                 <UsersListSkeleton />
               ) : (
-                users.map((user) => (
+                users?.map((user) => (
                   <div key={user._id} 
                     className={`flex items-center justify-center lg:justify-start gap-3 p-3 rounded-lg cursor-pointer transition-colors ${selectedUser?.clerkId === user.clerkId ? "bg-zinc-800" : "hover:bg-zinc-800/50"}`}
                     onClick={() => setSelectedUser(user)}  
