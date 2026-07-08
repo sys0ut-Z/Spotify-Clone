@@ -1,5 +1,4 @@
 import type { NextFunction, Request, Response } from "express";
-import UserModel from "../models/user.model.js";
 import { AppError } from "../utils/GlobalErrorHandler.js";
 import SongModel from "../models/song.model.js";
 import type { UploadedFile } from "express-fileupload";

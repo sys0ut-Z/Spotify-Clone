@@ -1,7 +1,7 @@
 import { Server as SocketServer } from "socket.io";
 import type {Server as HttpServer} from 'http';
-import MessageModel from "../models/message.model";
-import { FRONTEND_URL } from "../server";
+import MessageModel from "../models/message.model.js";
+import { FRONTEND_URL } from "../server.js";
 
 interface Message {
   senderId: string;
