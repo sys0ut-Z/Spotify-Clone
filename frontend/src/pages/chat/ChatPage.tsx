@@ -27,14 +27,8 @@ const ChatPage = () => {
   // fetch messages only if user(receiver) is selected
   useEffect(() => {
     if(selectedUser)
-      fetchMessages(selectedUser._id);
+      fetchMessages(selectedUser.clerkId);
   }, [selectedUser]);
-
-  // console.log({
-  //   senderId: messages[0]?.senderId,
-  //   userId: user?.id,
-  //   receiverId: selectedUser?.clerkId
-  // });
 
   return (
     <main className='h-full rounded-lg bg-linear-to-b from-zinc-800 to-zinc-900 overflow-hidden'>
@@ -53,9 +47,16 @@ const ChatPage = () => {
                 <ScrollArea className='h-[calc(100vh-340px)]'>
                   <div className='p-3.5 space-y-4'>
                     {
-                      messages.map(message => (
+                      messages.map(message => {
+                        // TODO : fix -> senderId is null
+                        // console.log({
+                        //   senderId: message.senderId,
+                        //   userId: user?.id,
+                        //   receiverId: selectedUser?.clerkId
+                        // });
+                        return (
                         <div key={message._id} 
-                          className={`flex items-start gap-3 ${message.senderId === user?.id ? "flex-row-reverse" : ""}`}
+                          className={`flex items-start gap-3 ${message.senderId === user?.id ? "justify-end" : "justify-start"}`}
                         >
                           <Avatar className='size-6'>
                             <AvatarImage 
@@ -73,7 +74,7 @@ const ChatPage = () => {
                             </span>
                           </div>
                         </div>
-                      ))
+                      )})
                     }
                   </div>
                 </ScrollArea>

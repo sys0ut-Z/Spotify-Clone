@@ -1,11 +1,11 @@
 import mongoose, { Model, type HydratedDocument, type InferSchemaType } from "mongoose";
 
 const messageSchema = new mongoose.Schema({
-  sender: {
+  senderId: {
     type: String, // clerk user ID
     required: true,
   },
-  receiver: {
+  receiverId: {
     type: String, // clerk user ID
     required: true,
   },

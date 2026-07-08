@@ -31,8 +31,11 @@ const getAllMessages = async (
   const {userId: myId} = getAuth(req);
   const userId = req.params.userId;
 
+  // console.log("my id : ", myId)
+  // console.log("userId : ", userId)
+  
   try {
-    const user = await UserModel.findById(userId);
+    const user = await UserModel.findOne({clerkId: userId});
 
     if(!user){
       throw new Error("User not found, unable to get messages");

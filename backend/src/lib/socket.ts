@@ -58,8 +58,8 @@ export const initializeSocket = (httpServer: HttpServer) => {
         const {senderId, receiverId, content} = data;
   
         const message = await MessageModel.create({
-          sender: senderId,
-          receiver: receiverId,
+          senderId,
+          receiverId,
           content
         });
   

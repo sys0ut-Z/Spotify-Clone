@@ -23,7 +23,7 @@ interface ChatStore{
   setSelectedUser: (user: User | null) => void;
 };
 
-const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:7008" : "/";
 const socket = io(BASE_URL, {
   autoConnect: false, // only connect if user is authenticated
   withCredentials: true, // enables sending cookies & headers
@@ -59,7 +59,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       // add in online users
       // ? 'user_connected'
       socket.on("online_users", (userId: string) => {
-        console.log("user connected", userId);
+        // console.log("user connected", userId);
         set(state => ({ 
           onlineUsers: new Set([...state.onlineUsers, userId]) 
         }));
@@ -129,12 +129,13 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     const {isConnected, clientSocket } = get();
     if(!clientSocket || !isConnected) return;
 
-    set({ isMessagesLoading: true, messages: [], error: null });
+    set({ isMessagesLoading: true, error: null });
     try {
       const res = await axiosInstance.get(`/user/messages/${receiverId}`);
+      // console.log(res.data.messages);
       set({ messages: res.data.messages });
     } catch (error: any) {
-      set({ error: error.response?.data?.message || "Something went wrong while fetching messages" });
+      set({ error: error.response?.data?.message || "Something went wrong while fetching messages", messages: [] });
     }
     finally{
       set({ isMessagesLoading: false });

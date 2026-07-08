@@ -10,11 +10,13 @@ import statsRouter from "./routes/stats.routes.js";
 import { connectDB } from "./lib/db.js";
 import { AppError } from "./utils/GlobalErrorHandler.js";
 import { errorMiddleware } from "./middlewares/error.middleware.js";
+import { initializeSocket } from "./lib/socket.js";
 import { clerkMiddleware } from "@clerk/express";
 import fileUpload from 'express-fileupload';
 import path from 'path';
 import { createServer } from "http";
-import { initializeSocket } from "./lib/socket.js";
+import cron from "node-cron";
+import fs from 'fs';
 
 export const FRONTEND_URL = process.env.NODE_ENV === "development" ? "http://localhost:5173" : "";
 
@@ -37,6 +39,33 @@ app.use(fileUpload({
     fileSize: 5 * 1024 * 1024, //
   }
 }));
+
+// find 'tmp' folder from current working directory
+const tmpDir = path.join(process.cwd(), 'tmp');
+
+// cron job to remove files from 'tmp' folder every hour
+// & cron format :'minute hour day-of-month month day-of-week'
+// * every 5 secs : '*/5 * * * * *'
+// * every day at 3 AM : '0 3 * * *'
+// * every Monday at noon : '0 12 * * 1'
+cron.schedule("0 * * * *", () => {
+  if(fs.existsSync(tmpDir)) {
+    fs.readdir(tmpDir, (err, files) => {
+      if(err) {
+        console.error("Error reading directory:", err);
+        return;
+      }
+      
+      for(const file of files){
+        fs.unlink(path.join(tmpDir, file), (unlinkError) => {
+          if(unlinkError){
+            console.error("Error deleting file:", unlinkError);
+          }
+        })
+      }
+    })
+  }
+});
 
 app.use(cors({
   origin: FRONTEND_URL,

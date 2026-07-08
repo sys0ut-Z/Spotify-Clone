@@ -12,7 +12,7 @@ const MessageInput = () => {
 
   const handleSendMessage = () => {
     if(!newMessage.trim() || !user || !selectedUser) return;
-
+    
     sendMessage(
       newMessage.trim(), 
       user.id, 
@@ -36,7 +36,7 @@ const MessageInput = () => {
           onClick={handleSendMessage}
           disabled={!newMessage.trim()}
         >
-          <Send size="size-4"/>
+          <Send className="size-4"/>
         </Button>
       </div>
 

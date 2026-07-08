@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "server": "tsx watch src/server.ts",
+    "build": "tsc -b",
+    "start" : "node build/server.js",
     "seed:song": "npx tsx src/seeds/songs.ts",
     "seed:album": "npx tsx src/seeds/albums.ts"
   },
@@ -20,6 +22,7 @@
     "express": "^5.2.1",
     "express-fileupload": "^1.5.2",
     "mongoose": "^9.7.2",
+    "node-cron": "^4.6.0",
     "socket.io": "^4.8.3"
   },
   "devDependencies": {
@@ -28,6 +31,7 @@
     "@types/express": "^5.0.6",
     "@types/express-fileupload": "^1.5.1",
     "@types/mongoose": "^5.11.96",
+    "@types/node-cron": "^3.0.11",
     "@types/socket.io": "^3.0.1",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3"
